@@ -1,0 +1,164 @@
+import OpenTypeFonts from "./fonts";
+
+const ObjInfo = class {
+    constructor() {
+        this.detailsContainer = document.getElementById("objDetails");
+    }
+
+    showObjInfo(obj) {
+        const str = JSON.stringify(obj, null, 4);
+        const formattedStr = this.formatText(str);
+
+        this.detailsContainer.innerText = formattedStr;
+    };
+
+    formatText(JSONString) {
+        const propValRegex = /".+":\s.+/gm;
+        const quoteRegex = /"/g;
+        const objData = {};
+        let m;
+
+        while ((m = propValRegex.exec(JSONString)) !== null) {
+            // This is necessary to avoid infinite loops with zero-width matches
+            if (m.index === propValRegex.lastIndex) {
+                propValRegex.lastIndex++;
+            }
+
+            m.forEach((match) => {
+                const d = match.split(':');
+
+                objData[d[0].replace(quoteRegex, '')] = {
+                    value: d[1].replace(/\s+/, ''),
+                    type: quoteRegex.test(d[1]) ? 'text' : 'specific',
+                };
+            });
+        }
+
+        const str = Object.keys(objData).sort().map((key) => `    "${key}": ${objData[key].value}`);
+
+        return `
+{\n${str.join('\n')}\n}`
+    }
+};
+
+export default class {
+    constructor(canvasEl = null) {
+        this.canvasEl = canvasEl;
+
+        this.controls = document.querySelectorAll('[data-control]');
+        this.controlInputs = document.querySelectorAll('[data-control-input]');
+        this.controlButtons = document.querySelectorAll('[data-control-button]');
+
+        this.pathFromButton = document.getElementById('pathFromButton');
+        this.deleteButton = document.getElementById('deleteButton');
+
+        this.infoProvider = new ObjInfo();
+    }
+
+    init() {
+        this.controlButtons.length && this.controlButtons.forEach((controlButton) => {
+            controlButton.onclick = () => {
+                const obj = this.canvasEl.getActiveObject();
+                const relatedControlInput = controlButton.parentElement.querySelector('[data-control-input]');
+
+                if (!relatedControlInput) {
+                    return void(0);
+                }
+
+                let newValue = {};
+
+                newValue[relatedControlInput.dataset.controlInput] = relatedControlInput.value;
+                obj.set(newValue);
+
+                this.canvasEl.renderAll();
+            }
+        });
+
+        this.controlInputs && this.controlInputs.forEach((controlInput) => {
+            controlInput.oninput = (e) => {
+                const obj = this.canvasEl.getActiveObject();
+                let newValue = {};
+
+                newValue[controlInput.dataset.controlInput] = controlInput.value;
+                obj.set(newValue);
+
+                this.canvasEl.renderAll();
+            }
+        });
+
+        if (this.deleteButton) {
+            this.deleteButton.onclick = () => {
+                const obj = this.canvasEl.getActiveObject();
+
+                obj.remove();
+                this.canvasEl.renderAll();
+            }
+        }
+    }
+
+    activateControls() {
+        this.controls.forEach((control) => {
+            control.removeAttribute("disabled");
+        });
+    };
+
+    deactivateControls() {
+        this.controls.forEach((control) => {
+            control.setAttribute("disabled", true);
+        });
+    };
+
+    setControlsValues() {
+        const obj = this.canvasEl.getActiveObject();
+
+        this.controlInputs.forEach((controlInput) => {
+            const newVal = obj[controlInput.dataset.controlInput];
+
+            if (newVal) {
+                controlInput.value = newVal;
+            } else {
+                controlInput.value = '';
+                controlInput.setAttribute('disabled', true);
+            }
+
+        });
+    };
+
+    addSelectionListeners(obj) {
+        obj.on('selected', () => {
+            console.log('obj: ', obj);
+            this.activateControls();
+            this.setControlsValues();
+            this.infoProvider.showObjInfo(obj);
+        });
+
+        obj.on('modified', () => {
+            this.setControlsValues();
+            this.infoProvider.showObjInfo(obj);
+        });
+    }
+
+    static scaleUpX2(obj) {
+        obj.set({
+            scaleX: obj.scaleX * 2,
+            scaleY: obj.scaleY * 2
+        });
+    };
+
+    static scaleDownX2(obj) {
+        obj.set({
+            scaleX: obj.scaleX / 2,
+            scaleY: obj.scaleY / 2
+        });
+    };
+}
+
+const scaleDownButton = document.getElementById("scaleDownButton");
+const scaleUpButton = document.getElementById("scaleUpButton");
+const rotateButton = document.getElementById("rotateButton");
+
+const setFontSizeButton = document.getElementById("setFontSizeButton");
+const objFontSize = document.getElementById("objFontSize");
+
+const setLeftButton = document.getElementById("setLeftButton");
+const objLeft = document.getElementById("objLeft");

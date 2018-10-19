@@ -1,0 +1,66 @@
+html,
+body {
+    align-items: flex-start;
+    display: flex;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    justify-content: space-around;
+    width: 100%;
+}
+
+body {
+    overflow-y: scroll;
+}
+
+@canvas-width: 512px;
+
+.info-section {
+    flex-basis: calc(~'90% - @{canvas-width}');
+    padding-top: 50px;
+}
+
+.canvas-section {
+    flex-basis: @canvas-width;
+    padding-top: 50px;
+}
+
+.test-canvas {
+    box-shadow: 0 0 0 1px #00f;
+}
+
+.controls {
+    padding: 10px 0;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+
+    &__row {
+        display: flex;
+        margin-bottom: 15px;
+    }
+
+    &__group {
+        align-items: stretch;
+        display: flex;
+        flex-grow: 1;
+        padding: 2.5px;
+
+        &__one-half {
+            flex-basis: 50%;
+        }
+
+        &__one-ершкв {
+            flex-basis: 33.333333%;
+        }
+    }
+
+    &__textarea {
+        flex-grow: 1;
+        min-height: 115px;
+    }
+}
+
+.obj-details {
+    line-height: 1.5;
+}

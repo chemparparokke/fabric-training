@@ -1,0 +1,92 @@
+<html>
+
+<head>
+  <title>Fabric.js + opentype.js trainig</title>
+  <link rel="stylesheet" href="/stylesheets/main.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.3/fabric.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/0.10.0/opentype.min.js"></script>
+</head>
+
+<body>
+<section class='canvas-section'>
+  <h1>Fabric.js + Opentype.js trainig</h1>
+
+  <canvas class="test-canvas" id="test_canvas" width="512" height="512"></canvas>
+
+  <div class="controls">
+    <div class="controls__row">
+      <button class="controls__button"
+              id="scaleUpButton"
+              type="button"
+              data-control
+              disabled>Scale up object x2</button>
+      <button class="controls__button"
+              id="scaleDownButton"
+              type="button"
+              data-control
+              disabled>Scale down object x2</button>
+      <button class="controls__button"
+              id="rotateButton"
+              type="button"
+              data-control
+              disabled>rotate 60 deg</button>
+    </div>
+
+    <div class="controls__row">
+      <div class="controls__group">
+        <textarea class="controls__textarea" id="objText" title="Текст" data-control data-control-input="text" disabled></textarea>
+        <button class="controls__button" id="setTextButton" type="button" data-control data-control-button disabled>Применить текст</button>
+      </div>
+    </div>
+
+    <div class="controls__row">
+      <div class="controls__group">
+        <input id="objFontSize" type="number" title="Размер шрифта" data-control data-control-input="fontSize" disabled>
+        <button class="controls__button" id="setFontSizeButton" type="button" data-control data-control-button disabled>Set font size</button>
+      </div>
+
+      <div class="controls__group">
+        <input id="objFontFill" type="text" title="Цвет шрифта" data-control data-control-input="fill" disabled>
+        <button class="controls__button" id="setFontFillButton" type="button" data-control data-control-button disabled>Set font fill</button>
+      </div>
+    </div>
+
+    <div class="controls__row">
+      <div class="controls__group">
+        <input id="objLeft" type="number"  title="Координата left" data-control data-control-input="left" disabled>
+        <button class="controls__button" id="setLeftButton" type="button" data-control data-control-button disabled>Set object left</button>
+      </div>
+
+      <div class="controls__group">
+        <input id="objTop" type="number"  title="Координата top" data-control data-control-input="top" disabled>
+        <button class="controls__button" id="setTopButton" type="button" data-control data-control-button disabled>Set object top</button>
+      </div>
+    </div>
+
+    <div class="controls__row">
+      <button class="controls__button"
+              id="pathFromButton"
+              type="button"
+              data-control
+              disabled>Create path from object</button>
+      <button class="controls__button"
+              id="deleteButton"
+              type="button"
+              data-control
+              disabled>Delete object</button>
+    </div>
+  </div>
+</section>
+
+<section class='info-section'>
+  <h2>Object info</h2>
+
+  <pre>
+    <code class="obj-details" id="objDetails"></code>
+  </pre>
+</section>
+
+<script src="scripts/main.js"></script>
+</body>
+
+</html>
