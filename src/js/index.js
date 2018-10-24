@@ -8,8 +8,22 @@ const CANVAS_WRAPPER_SELECTOR = "test_canvas";
 const FONT_FAMILY = "Andika";
 const FONT_SIZE = 32;
 
+fabric.util.object.extend(fabric.Canvas.prototype, {
+    __userClipPath: null,
+});
+
 const canvas = new fabric.Canvas(CANVAS_WRAPPER_SELECTOR);
 const canvasControls = new CanvasControls(canvas);
+
+canvas.__userClipPath = new fabric.Rect({
+    absolutePositioned: true,
+    height: canvas.height * 3 / 4,
+    left: canvas.width / 2,
+    originX: 'center',
+    originY: 'center',
+    top: canvas.height / 2,
+    width: canvas.width * 3 / 4,
+});
 
 const initFabricFixes = () => {
     fabric.util.object.extend(fabric.Text.prototype, {
@@ -24,6 +38,20 @@ const initFabricFixes = () => {
             return this.fontSize * this._fontSizeMult;
         },
     });
+};
+
+const addTestImage = () => {
+    const imgUrl = '/images/front.jpg';
+    const image = new Image();
+
+    image.crossOrigin = 'Anonymous';
+    image.onload = () => {
+        const fabricImage = new fabric.Image(image);
+
+        fabricImage.scaleToWidth(canvas.getWidth());
+        canvas.add(fabricImage);
+    };
+    image.src = imgUrl;
 };
 
 (async () => {
@@ -41,11 +69,11 @@ const initFabricFixes = () => {
         const obj = canvas.getActiveObject();
         const removeObj = obj && e.code === 'Delete';
 
-        removeObj && obj.remove();
+        removeObj && canvas.remove(obj);
     });
 
-    if (canvasControls.pathFromButton) {
-        canvasControls.pathFromButton.onclick = () => {
+    if (canvasControls.pathFromOpenTypeButton) {
+        canvasControls.pathFromOpenTypeButton.onclick = () => {
             const obj = canvas.getActiveObject();
             const path = OpenTypeFonts.getTextPath(obj);
             const fabricPath = new fabric.Path(path.toPathData(6));
@@ -91,15 +119,16 @@ const initFabricFixes = () => {
         // textBackgroundColor: '#ffff00',
         top: 256,
     });
-    // const text2 = fabric.util.object.clone(text1);
-    //
-    // text2.set({
-    //     fill: "#f00",
-    //     fontSize: text1.fontSize * 2
-    // });
+    const text2 = fabric.util.object.clone(text1);
+
+    text2.set({
+        fill: "#f00",
+        fontSize: text1.fontSize * 2
+    });
 
     canvas.add(text1);
-    // canvas.add(text2);
+    canvas.add(text2);
+
 
     canvas.on("selection:cleared", () => {
         canvasControls.deactivateControls();

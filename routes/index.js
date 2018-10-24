@@ -1,3 +1,4 @@
+var cors = require('cors');
 var express = require('express');
 var router = express.Router();
 

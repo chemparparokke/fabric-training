@@ -1,3 +1,4 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
@@ -24,5 +25,9 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: '../stylesheets/[name].css?ver=[contenthash:8]'
         }),
+        new CopyWebpackPlugin([{
+            from: path.resolve(__dirname, 'src/img'),
+            to: path.resolve(__dirname, 'public/images'),
+        }]),
     ]
 };

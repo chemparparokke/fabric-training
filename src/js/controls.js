@@ -49,8 +49,13 @@ export default class {
         this.controlInputs = document.querySelectorAll('[data-control-input]');
         this.controlButtons = document.querySelectorAll('[data-control-button]');
 
-        this.pathFromButton = document.getElementById('pathFromButton');
+        this.pathFromOpenTypeButton = document.getElementById('pathFromOpenTypeButton');
+
+        this.setClipPath = document.getElementById('setClipPath');
+        this.unSetClipPath = document.getElementById('unSetClipPath');
         this.deleteButton = document.getElementById('deleteButton');
+
+        this.objFromUrlButton = document.getElementById('objFromUrlButton');
 
         this.infoProvider = new ObjInfo();
     }
@@ -92,6 +97,56 @@ export default class {
 
                 obj.remove();
                 this.canvasEl.renderAll();
+            }
+        }
+
+        if (this.objFromUrlButton) {
+            this.objFromUrlButton.onclick = () => {
+                const fullprintUrlRegex = /assets\/images\/fullprint/;
+                const url = objFromUrlButton.parentElement.querySelector('input').value;
+
+                url && fabric.loadSVGFromURL(url , (objects, options) => {
+                    console.log('objects from url: ', objects);
+                    const allowedObjects = objects.filter((object) => {
+                        return [
+                            object.hasOwnProperty('text') && object.text.length > 0,
+                            object.hasOwnProperty('path') && object.path.length > 0,
+                            object.hasOwnProperty('_element') && !fullprintUrlRegex.test(object.getSrc()),
+                        ].some(Boolean);
+                    });
+
+                    allowedObjects.forEach((object) => {
+                        this.canvasEl.add(object);
+                        this.canvasEl.renderAll();
+                    });
+
+                    console.log('allowedObjects: ', allowedObjects);
+                });
+
+            }
+        }
+
+        if (this.setClipPath) {
+            setClipPath.onclick = () => {
+                if (!this.canvasEl.__userClipPath) {
+                    return void(0);
+                }
+
+                const obj = this.canvasEl.getActiveObject();
+
+                obj.clipPath = this.canvasEl.__userClipPath;
+                this.canvasEl.renderAll();
+            }
+        }
+
+        if (this.unSetClipPath) {
+            unSetClipPath.onclick = () => {
+                const obj = this.canvasEl.getActiveObject();
+
+                if (obj.clipPath) {
+                    obj.clipPath = null;
+                    this.canvasEl.renderAll();
+                }
             }
         }
     }
@@ -152,13 +207,3 @@ export default class {
         });
     };
 }
-
-const scaleDownButton = document.getElementById("scaleDownButton");
-const scaleUpButton = document.getElementById("scaleUpButton");
-const rotateButton = document.getElementById("rotateButton");
-
-const setFontSizeButton = document.getElementById("setFontSizeButton");
-const objFontSize = document.getElementById("objFontSize");
-
-const setLeftButton = document.getElementById("setLeftButton");
-const objLeft = document.getElementById("objLeft");

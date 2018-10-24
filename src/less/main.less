@@ -1,22 +1,29 @@
 html,
 body {
-    align-items: flex-start;
     display: flex;
+    flex-direction: column;
     height: 100%;
     margin: 0;
     padding: 0;
-    justify-content: space-around;
     width: 100%;
 }
 
 body {
     overflow-y: scroll;
+    padding: 10px;
 }
 
 @canvas-width: 512px;
 
-.info-section {
-    flex-basis: calc(~'90% - @{canvas-width}');
+.content {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.section {
+    flex-basis: 33%;
     padding-top: 50px;
 }
 
@@ -44,20 +51,29 @@ body {
         align-items: stretch;
         display: flex;
         flex-grow: 1;
-        padding: 2.5px;
-
-        &__one-half {
-            flex-basis: 50%;
-        }
-
-        &__one-ершкв {
-            flex-basis: 33.333333%;
-        }
+        flex-basis: 50%;
+        padding: 2.5px 15px 2.5px 2.5px;
     }
 
     &__textarea {
         flex-grow: 1;
         min-height: 115px;
+    }
+
+    &__label {
+        margin-right: 5px;
+    }
+
+    &__input {
+        flex-grow: 1;
+    }
+
+    &__button {
+        margin-right: 10px;
+
+        &:last-child {
+            margin-right: initial;
+        }
     }
 }
 

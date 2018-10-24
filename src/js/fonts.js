@@ -145,16 +145,12 @@ export default new class {
             return void(0);
         }
 
-        console.log('openTypeFont: ', openTypeFont);
-
         const textParams = {
             fontSizeFraction: textObj._fontSizeFraction,
-            heightOfLine: textObj._getHeightOfLine() * textObj.scaleX,
-            // heightOfLine: textObj._getHeightOfLine(),
+            heightOfLine: textObj.getHeightOfLine(0) * textObj.scaleX,
             lineHeight: textObj.lineHeight,
         };
 
         return openTypeFont.getMultiLinePath(textObj.text, textObj.left, textObj.top, textObj.fontSize * textObj.scaleX, textParams);
-        // return openTypeFont.getMultiLinePath(textObj.text, 0, 0, textObj.fontSize, textParams);
     }
 }

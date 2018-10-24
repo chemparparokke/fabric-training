@@ -1,90 +1,119 @@
 <html>
 
 <head>
-  <title>Fabric.js + opentype.js training</title>
-  <link rel="stylesheet" href="/stylesheets/main.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.3/fabric.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/0.10.0/opentype.min.js"></script>
+    <title>Fabric.js + opentype.js training</title>
+    <link rel="stylesheet" href="/stylesheets/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/2.4.1/fabric.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/0.10.0/opentype.min.js"></script>
 </head>
 
 <body>
-<section class='canvas-section'>
-  <h1>Fabric.js + Opentype.js trainig</h1>
+<h1>Fabric.js + Opentype.js trainig</h1>
 
-  <canvas class="test-canvas" id="test_canvas" width="512" height="512"></canvas>
+<div class="content">
+    <section class="section controls-section">
+        <h2>Controls</h2>
 
-  <div class="controls">
-    <div class="controls__row">
-      <button class="controls__button"
-              id="scaleUpButton"
-              type="button"
-              data-control
-              disabled>Scale up object x2</button>
-      <button class="controls__button"
-              id="scaleDownButton"
-              type="button"
-              data-control
-              disabled>Scale down object x2</button>
-      <button class="controls__button"
-              id="rotateButton"
-              type="button"
-              data-control
-              disabled>rotate 60 deg</button>
-    </div>
+        <div class="controls">
+            <div class="controls__row">
+                <div class="controls__group">
+                    <label class="controls__label" for="objText">Set text:</label>
+                    <textarea class="controls__textarea" id="objText" title="Текст" data-control data-control-input="text" disabled></textarea>
+                </div>
+            </div>
 
-    <div class="controls__row">
-      <div class="controls__group">
-        <textarea class="controls__textarea" id="objText" title="Текст" data-control data-control-input="text" disabled></textarea>
-        <button class="controls__button" id="setTextButton" type="button" data-control data-control-button disabled>Применить текст</button>
-      </div>
-    </div>
+            <div class="controls__row">
+                <div class="controls__group">
+                    <label class="controls__label" for="objFontSize">Set font size:</label>
+                    <input class="controls__input" id="objFontSize" type="number" title="Размер шрифта" data-control data-control-input="fontSize" disabled>
+                </div>
 
-    <div class="controls__row">
-      <div class="controls__group">
-        <input id="objFontSize" type="number" title="Размер шрифта" data-control data-control-input="fontSize" disabled>
-        <button class="controls__button" id="setFontSizeButton" type="button" data-control data-control-button disabled>Set font size</button>
-      </div>
+                <div class="controls__group">
+                    <label class="controls__label" for="objFontFill">Set font fill:</label>
+                    <input class="controls__input" id="objFontFill" type="text" title="Цвет шрифта" data-control data-control-input="fill" disabled>
+                </div>
+            </div>
 
-      <div class="controls__group">
-        <input id="objFontFill" type="text" title="Цвет шрифта" data-control data-control-input="fill" disabled>
-        <button class="controls__button" id="setFontFillButton" type="button" data-control data-control-button disabled>Set font fill</button>
-      </div>
-    </div>
+            <div class="controls__row">
+                <div class="controls__group">
+                    <label class="controls__label" for="objLeft">Set object left:</label>
+                    <input class="controls__input" id="objLeft" type="number"  title="Координата left" data-control data-control-input="left" disabled>
+                </div>
 
-    <div class="controls__row">
-      <div class="controls__group">
-        <input id="objLeft" type="number"  title="Координата left" data-control data-control-input="left" disabled>
-        <button class="controls__button" id="setLeftButton" type="button" data-control data-control-button disabled>Set object left</button>
-      </div>
+                <div class="controls__group">
+                    <label class="controls__label" for="objTop">Set object top:</label>
+                    <input class="controls__input" id="objTop" type="number"  title="Координата top" data-control data-control-input="top" disabled>
+                </div>
+            </div>
 
-      <div class="controls__group">
-        <input id="objTop" type="number"  title="Координата top" data-control data-control-input="top" disabled>
-        <button class="controls__button" id="setTopButton" type="button" data-control data-control-button disabled>Set object top</button>
-      </div>
-    </div>
+            <div class="controls__row">
+                <div class="controls__group">
+                    <label class="controls__label" for="objWidth">Set object width:</label>
+                    <input class="controls__input" id="objWidth" type="number"  title="Ширина" data-control data-control-input="width" disabled>
+                </div>
 
-    <div class="controls__row">
-      <button class="controls__button"
-              id="pathFromButton"
-              type="button"
-              data-control
-              disabled>Create path from object</button>
-      <button class="controls__button"
-              id="deleteButton"
-              type="button"
-              data-control
-              disabled>Delete object</button>
-    </div>
-  </div>
-</section>
+                <div class="controls__group">
+                    <label class="controls__label" for="objHeight">Set object height:</label>
+                    <input class="controls__input" id="objHeight" type="number"  title="Высота" data-control data-control-input="height" disabled>
+                </div>
+            </div>
 
-<section class='info-section'>
-  <h2>Object info</h2>
+            <div class="controls__row">
+                <button class="controls__button"
+                        id="pathFromOpenTypeButton"
+                        type="button"
+                        data-control
+                        disabled>Create path from object with Opentype</button>
+                <button class="controls__button"
+                        id="deleteButton"
+                        type="button"
+                        data-control
+                        disabled>Delete object</button>
+            </div>
 
-  <pre>
-    <code class="obj-details" id="objDetails"></code>
-  </pre>
-</section>
+            <div class="controls__row">
+                <button class="controls__button"
+                        id="setClipPath"
+                        type="button"
+                        data-control
+                        disabled>Применить clipPath</button>
+                <button class="controls__button"
+                        id="unSetClipPath"
+                        type="button"
+                        data-control
+                        disabled>Отменить clipPath</button>
+            </div>
+
+            <div class="controls__row">
+                <div class="controls__group">
+                    <input class="controls__input" id="objFromUrl" type="url"  title="Восстановить из SVG файла" value="https://catalog-fm.vsemayki.ru/9017183185bcd641be80da3.09890000">
+                    <button class="controls__button" id="objFromUrlButton" type="button">Restore objects from svg</button>
+                </div>
+            </div>
+
+            <div class="controls__row">
+                <div class="controls__group">
+                    <input class="controls__input" id="imgFromUrl" type="url"  title="Загрузить картинку" value="/images/front.jpg">
+                    <button class="controls__button" id="imgFromUrlButton" type="button">Load image</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class='section canvas-section'>
+        <h2>Canvas view</h2>
+
+        <canvas class="test-canvas" id="test_canvas" width="512" height="512"></canvas>
+    </section>
+
+    <section class='section info-section'>
+        <h2>Object info</h2>
+
+        <pre>
+        <code class="obj-details" id="objDetails"></code>
+    </pre>
+    </section>
+</div>
 
 <script src="scripts/main.js"></script>
 </body>
