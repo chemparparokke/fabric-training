@@ -38,7 +38,7 @@ export default new class {
 
             opentype.Font.prototype.getMultiLinePath = function (text, x, y, fontSize, options = {}) {
                 const fullPath = new opentype.Path();
-                const regex = /\r?\n/gm;
+                const regex = /\r?\n/;
 
                 const fontSizeFraction = options.fontSizeFraction || 0;
                 const heightOfLine = options.heightOfLine || 0;
@@ -50,7 +50,7 @@ export default new class {
 
                 let lineHeights = 0;
 
-                y -= fontSize * fontSizeFraction;
+                // y -= fontSize * fontSizeFraction;
 
                 for (const textLine of textLines) {
                     const pathPart = this.getPath(textLine, x, y + lineHeights + maxHeight, fontSize);
@@ -151,6 +151,12 @@ export default new class {
             lineHeight: textObj.lineHeight,
         };
 
-        return openTypeFont.getMultiLinePath(textObj.text, textObj.left, textObj.top, textObj.fontSize * textObj.scaleX, textParams);
+        return openTypeFont.getMultiLinePath(
+            textObj.text,
+            textObj.left,
+            textObj.top,
+            textObj.fontSize * textObj.scaleX,
+            textParams
+        );
     }
 }

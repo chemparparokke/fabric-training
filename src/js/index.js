@@ -55,6 +55,7 @@ const addTestImage = () => {
 };
 
 (async () => {
+    window.qqq = canvas;
     const font = await getGoogleFont(FONT_FAMILY);
     await OpenTypeFonts.loadFont(font);
 
@@ -86,21 +87,8 @@ const addTestImage = () => {
                 selectable: obj.selectable,
             });
 
-            // fabricPath.set({
-            //     width: obj.width,
-            //     height: obj.height,
-            // });
-
-            fabricPath.set({
-                left: obj.left,
-                top: obj.top,
-            });
-
-            // fabricPath.set({
-            //     originalScale: obj.originalScale,
-            //     scaleX: obj.scaleX,
-            //     scaleY: obj.scaleY,
-            // });
+            fabricPath.set('left', fabricPath.left);
+            fabricPath.set('top', fabricPath.top);
 
             canvas.add(fabricPath);
             canvas.renderAll();

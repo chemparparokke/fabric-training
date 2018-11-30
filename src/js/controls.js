@@ -82,11 +82,8 @@ export default class {
         this.controlInputs && this.controlInputs.forEach((controlInput) => {
             controlInput.oninput = (e) => {
                 const obj = this.canvasEl.getActiveObject();
-                let newValue = {};
 
-                newValue[controlInput.dataset.controlInput] = controlInput.value;
-                obj.set(newValue);
-
+                obj.set(controlInput.dataset.controlInput, controlInput.value);
                 this.canvasEl.renderAll();
             }
         });
@@ -114,6 +111,8 @@ export default class {
                             object.hasOwnProperty('_element') && !fullprintUrlRegex.test(object.getSrc()),
                         ].some(Boolean);
                     });
+
+                    console.log('allowedObjects: ', allowedObjects);
 
                     allowedObjects.forEach((object) => {
                         this.canvasEl.add(object);
